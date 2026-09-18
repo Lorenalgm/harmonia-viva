@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Harmonia Viva — A Arte e a Ciência da Música</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- MediaPipe Hands & Camera Utils -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- Header / Barra de Navegação -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="brand">
+        <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 18V5l12-2v13"></path>
+          <circle cx="6" cy="18" r="3"></circle>
+          <circle cx="18" cy="16" r="3"></circle>
+        </svg>
+        <span>Harmonia<span class="gradient-text">Viva</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#generos">Gêneros</a>
+        <a href="#sintetizador">Sintetizador & Câmera</a>
+        <a href="#historia">História</a>
+        <a href="#curiosidades">Ciência do Som</a>
+      </nav>
+
+      <a href="#sintetizador" class="btn-nav">Tocar com Câmera</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-container">
+      <div class="hero-badge">
+        <span class="pulse-dot"></span>
+        Novo: Toque por Gestos no Ar via Câmera
+      </div>
+      <h1 class="hero-title">
+        A Linguagem Universal <br>
+        <span class="gradient-text">das Emoções</span>
+      </h1>
+      <p class="hero-subtitle">
+        Da vibração primordial das cordas aos sintetizadores futuristas, explore a jornada, 
+        a ciência acústica e toque o piano por gestos das mãos em frente à webcam.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#sintetizador" class="btn btn-primary">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          Abrir Câmera & Tocar
+        </a>
+        <a href="#generos" class="btn btn-secondary">
+          Explorar Gêneros
+        </a>
+      </div>
+
+      <!-- Visualizador de Ondas Sonoras -->
+      <div class="visualizer-card">
+        <div class="visualizer-header">
+          <div class="visualizer-status">
+            <span class="status-indicator"></span>
+            <span id="visualizer-label">Osciloscópio de Frequência em Tempo Real</span>
+          </div>
+          <div class="visualizer-mode">
+            <button id="toggle-wave-type" class="btn-chip" title="Mudar estilo visual">Estilo de Onda</button>
+          </div>
+        </div>
+        <canvas id="soundCanvas" width="900" height="140"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção: Gêneros Musicais -->
+  <section class="section" id="generos">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Diversidade Sonora</span>
+        <h2 class="section-title">Grandes Vertentes da Música</h2>
+        <p class="section-desc">
+          Cada gênero musical carrega consigo identidades culturais, revoluções sociais e padrões rítmicos únicos.
+        </p>
+      </div>
+
+      <div class="genres-grid">
+        <!-- Clássica -->
+        <div class="genre-card" data-genre="classica">
+          <div class="card-glow"></div>
+          <div class="genre-icon">🎻</div>
+          <span class="genre-period">Séc. XVII — Presente</span>
+          <h3 class="genre-name">Música Clássica</h3>
+          <p class="genre-info">
+            Elegância, contraponto harmônico e a grandiosidade de orquestras sinfônicas que desafiam o tempo.
+          </p>
+          <div class="genre-meta">
+            <span><strong>Ícones:</strong> Bach, Mozart, Beethoven</span>
+            <span><strong>Compasso:</strong> Variações complexas, 4/4 e 3/4</span>
+          </div>
+          <button class="btn-play-genre" data-chord="classica">
+            <span class="play-icon">▶</span> Ouvir Harmonia (Ré Maior)
+          </button>
+        </div>
+
+        <!-- Jazz -->
+        <div class="genre-card" data-genre="jazz">
+          <div class="card-glow"></div>
+          <div class="genre-icon">🎷</div>
+          <span class="genre-period">Início do Séc. XX</span>
+          <h3 class="genre-name">Jazz</h3>
+          <p class="genre-info">
+            Nascido em Nova Orleans, o jazz é a consagração do improviso, do swing e das harmonias ricas com sétimas e nonas.
+          </p>
+          <div class="genre-meta">
+            <span><strong>Ícones:</strong> Miles Davis, Coltrane, Ella Fitzgerald</span>
+            <span><strong>Marcas:</strong> Síncope e escala Blues</span>
+          </div>
+          <button class="btn-play-genre" data-chord="jazz">
+            <span class="play-icon">▶</span> Ouvir Harmonia (Dó com 7M/9)
+          </button>
+        </div>
+
+        <!-- Bossa Nova & MPB -->
+        <div class="genre-card" data-genre="bossanova">
+          <div class="card-glow"></div>
+          <div class="genre-icon">🎸</div>
+          <span class="genre-period">Década de 1950 — Presente</span>
+          <h3 class="genre-name">Bossa Nova & MPB</h3>
+          <p class="genre-info">
+            A união perfeita do samba sincopado brasileiro com as dissonâncias sutis do jazz e poesia intimista.
+          </p>
+          <div class="genre-meta">
+            <span><strong>Ícones:</strong> Tom Jobim, João Gilberto, Elis Regina</span>
+            <span><strong>Assinatura:</strong> Batida de violão e acordes diminutos</span>
+          </div>
+          <button class="btn-play-genre" data-chord="bossanova">
+            <span class="play-icon">▶</span> Ouvir Harmonia (Fá#m7 / B7)
+          </button>
+        </div>
+
+        <!-- Rock & Roll -->
+        <div class="genre-card" data-genre="rock">
+          <div class="card-glow"></div>
+          <div class="genre-icon">⚡</div>
+          <span class="genre-period">Década de 1950</span>
+          <h3 class="genre-name">Rock & Roll</h3>
+          <p class="genre-info">
+            Energia crua, guitarras distorcidas, baterias enérgicas e letras que marcaram o espírito de contestação jovem.
+          </p>
+          <div class="genre-meta">
+            <span><strong>Ícones:</strong> Led Zeppelin, Queen, Jimi Hendrix</span>
+            <span><strong>Elemento:</strong> Power chords e distorção analógica</span>
+          </div>
+          <button class="btn-play-genre" data-chord="rock">
+            <span class="play-icon">▶</span> Ouvir Harmonia (Power Chord Mi)
+          </button>
+        </div>
+
+        <!-- Música Eletrônica -->
+        <div class="genre-card" data-genre="eletronica">
+          <div class="card-glow"></div>
+          <div class="genre-icon">🎛️</div>
+          <span class="genre-period">Década de 1970 — Presente</span>
+          <h3 class="genre-name">Música Eletrônica</h3>
+          <p class="genre-info">
+            Timbres sintéticos, loops hipnóticos e batidas sintetizadas que transformaram as pistas de dança mundiais.
+          </p>
+          <div class="genre-meta">
+            <span><strong>Ícones:</strong> Kraftwerk, Daft Punk, Aphex Twin</span>
+            <span><strong>Assinatura:</strong> Síntese modular, Arpeggios e 4-on-the-floor</span>
+          </div>
+          <button class="btn-play-genre" data-chord="eletronica">
+            <span class="play-icon">▶</span> Ouvir Harmonia (Arp Eletrônico)
+          </button>
+        </div>
+
+        <!-- Hip-Hop -->
+        <div class="genre-card" data-genre="hiphop">
+          <div class="card-glow"></div>
+          <div class="genre-icon">🎤</div>
+          <span class="genre-period">Década de 1970 — Presente</span>
+          <h3 class="genre-name">Hip-Hop & R&B</h3>
+          <p class="genre-info">
+            Cultura do sample, batidas pesadas com sub-graves (808) e a maestria rítmica da poesia falada.
+          </p>
+          <div class="genre-meta">
+            <span><strong>Ícones:</strong> Grandmaster Flash, Tupac, Kendrick Lamar</span>
+            <span><strong>Base:</strong> Breaks de bateria, rimas rítmicas e graves</span>
+          </div>
+          <button class="btn-play-genre" data-chord="hiphop">
+            <span class="play-icon">▶</span> Ouvir Harmonia (Bass 808 & Acorde)
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção: Sintetizador & Câmera Interativa -->
+  <section class="section synth-section" id="sintetizador">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-tag">Visão Computacional & Som</span>
+        <h2 class="section-title">Piano Aéreo: Toque com a Câmera</h2>
+        <p class="section-desc">
+          Abra sua câmera ao lado do teclado! O sistema rastreia as pontas dos seus dedos no ar para disparar as notas, ou você pode tocar com o mouse e teclado.
+        </p>
+      </div>
+
+      <!-- Layout Lado a Lado: Câmera + Sintetizador -->
+      <div class="synth-interactive-wrapper">
+        
+        <!-- Painel da Câmera (Esquerda) -->
+        <div class="camera-panel">
+          <div class="panel-header">
+            <div class="panel-title-wrap">
+              <span class="camera-icon-pulse">📷</span>
+              <h3>Captura de Gestos no Ar</h3>
+            </div>
+            <span id="camera-status" class="status-badge status-off">Câmera Desligada</span>
+          </div>
+
+          <!-- Janela do Vídeo e Canvas de Rastreamento -->
+          <div class="camera-viewport">
+            <video id="webcam" playsinline autoplay muted></video>
+            <canvas id="hand-canvas"></canvas>
+            
+            <!-- Placeholder inicial antes de ligar a câmera -->
+            <div id="camera-placeholder" class="camera-placeholder">
+              <div class="placeholder-icon-big">✋</div>
+              <h4>Rastreamento das Mãos</h4>
+              <p>Posicione suas mãos em frente à webcam para tocar notas musicais no ar como um theremin/piano holográfico.</p>
+              <button id="btn-toggle-camera-main" class="btn btn-primary btn-pulse">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M23 7l-7 5 7 5V7z"></path>
+                  <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                </svg>
+                Ativar Câmera
+              </button>
+            </div>
+
+            <!-- Guias de Teclas Virtuais no Rodapé da Câmera -->
+            <div class="air-keys-overlay" id="air-keys-overlay">
+              <div class="air-col" data-note="C4"><span>Dó</span></div>
+              <div class="air-col" data-note="D4"><span>Ré</span></div>
+              <div class="air-col" data-note="E4"><span>Mi</span></div>
+              <div class="air-col" data-note="F4"><span>Fá</span></div>
+              <div class="air-col" data-note="G4"><span>Sol</span></div>
+              <div class="air-col" data-note="A4"><span>Lá</span></div>
+              <div class="air-col" data-note="B4"><span>Si</span></div>
+              <div class="air-col" data-note="C5"><span>Dó</span></div>
+            </div>
+          </div>
+
+          <!-- Controles da Câmera -->
+          <div class="camera-controls">
+            <div class="camera-btns-row">
+              <button id="btn-toggle-camera" class="btn-camera-action">
+                <span id="btn-cam-label">Ligar Câmera</span>
+              </button>
+              <button id="btn-toggle-zones" class="btn-camera-action secondary" title="Mostrar/Ocultar colunas guias">
+                Guias Visuais
+              </button>
+              <button id="btn-toggle-mode" class="btn-camera-action secondary" title="Alternar modo de toque">
+                Modo: <strong id="current-trigger-mode">Toque Aéreo</strong>
+              </button>
+            </div>
+
+            <div class="camera-info-bar">
+              <span id="tracking-info">💡 Dica: Mantenha a mão bem iluminada e visível no enquadramento.</span>
+              <span id="fps-display">0 FPS</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Painel do Sintetizador (Direita) -->
+        <div class="synth-panel">
+          <div class="panel-header">
+            <div class="panel-title-wrap">
+              <span class="synth-icon">🎹</span>
+              <h3>Teclado & Sintetizador</h3>
+            </div>
+            <span class="badge-accent">Web Audio API</span>
+          </div>
+
+          <!-- Controles do Sintetizador -->
+          <div class="synth-controls">
+            <div class="control-group">
+              <label class="control-label">Forma de Onda (Timbre)</label>
+              <div class="waveform-selector" id="wave-selector">
+                <button class="wave-btn active" data-wave="sine" title="Onda Senoidal — Suave e pura">Seno</button>
+                <button class="wave-btn" data-wave="triangle" title="Onda Triangular — Macia">Triângulo</button>
+                <button class="wave-btn" data-wave="sawtooth" title="Dente de Serra — Brilhante">Serra</button>
+                <button class="wave-btn" data-wave="square" title="Onda Quadrada — Retrô 8-bit">Quadrada</button>
+              </div>
+            </div>
+
+            <div class="control-group-row">
+              <div class="control-group">
+                <label class="control-label" for="synth-volume">Volume: <span id="vol-val">60%</span></label>
+                <input type="range" id="synth-volume" min="0" max="1" step="0.05" value="0.6" class="synth-slider">
+              </div>
+
+              <div class="control-group">
+                <label class="control-label" for="synth-sustain">Sustain: <span id="sustain-val">0.4s</span></label>
+                <input type="range" id="synth-sustain" min="0.1" max="1.5" step="0.1" value="0.4" class="synth-slider">
+              </div>
+            </div>
+          </div>
+
+          <!-- Teclado do Piano Físico/Virtual -->
+          <div class="piano-wrapper">
+            <div class="piano-keys" id="piano">
+              <!-- Dó (C4) -->
+              <div class="key white-key" data-note="C4" data-key="a">
+                <span class="note-name">Dó</span>
+                <span class="key-hint">A</span>
+              </div>
+              <!-- Dó# (C#4) -->
+              <div class="key black-key" data-note="C#4" data-key="w" style="left: 48px;">
+                <span class="note-name">C#</span>
+                <span class="key-hint">W</span>
+              </div>
+              <!-- Ré (D4) -->
+              <div class="key white-key" data-note="D4" data-key="s">
+                <span class="note-name">Ré</span>
+                <span class="key-hint">S</span>
+              </div>
+              <!-- Ré# (D#4) -->
+              <div class="key black-key" data-note="D#4" data-key="e" style="left: 114px;">
+                <span class="note-name">D#</span>
+                <span class="key-hint">E</span>
+              </div>
+              <!-- Mi (E4) -->
+              <div class="key white-key" data-note="E4" data-key="d">
+                <span class="note-name">Mi</span>
+                <span class="key-hint">D</span>
+              </div>
+              <!-- Fá (F4) -->
+              <div class="key white-key" data-note="F4" data-key="f">
+                <span class="note-name">Fá</span>
+                <span class="key-hint">F</span>
+              </div>
+              <!-- Fá# (F#4) -->
+              <div class="key black-key" data-note="F#4" data-key="t" style="left: 242px;">
+                <span class="note-name">F#</span>
+                <span class="key-hint">T</span>
+              </div>
+              <!-- Sol (G4) -->
+              <div class="key white-key" data-note="G4" data-key="g">
+                <span class="note-name">Sol</span>
+                <span class="key-hint">G</span>
+              </div>
+              <!-- Sol# (G#4) -->
+              <div class="key black-key" data-note="G#4" data-key="y" style="left: 308px;">
+                <span class="note-name">G#</span>
+                <span class="key-hint">Y</span>
+              </div>
+              <!-- Lá (A4) -->
+              <div class="key white-key" data-note="A4" data-key="h">
+                <span class="note-name">Lá</span>
+                <span class="key-hint">H</span>
+              </div>
+              <!-- Lá# (A#4) -->
+              <div class="key black-key" data-note="A#4" data-key="u" style="left: 374px;">
+                <span class="note-name">A#</span>
+                <span class="key-hint">U</span>
+              </div>
+              <!-- Si (B4) -->
+              <div class="key white-key" data-note="B4" data-key="j">
+                <span class="note-name">Si</span>
+                <span class="key-hint">J</span>
+              </div>
+              <!-- Dó Agudo (C5) -->
+              <div class="key white-key" data-note="C5" data-key="k">
+                <span class="note-name">Dó</span>
+                <span class="key-hint">K</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Indicador de Nota Tocada & Detalhes -->
+          <div class="synth-footer">
+            <div class="active-note-display">
+              Nota Atual: <strong id="current-note-display">—</strong> 
+              (<span id="current-freq-display">0 Hz</span>)
+            </div>
+            <div class="finger-status-display" id="finger-status-display">
+              Origem: <span class="badge-source">Aguardando toque</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção: Linha do Tempo da Música -->
+  <section class="section" id="historia">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Jornada Histórica</span>
+        <h2 class="section-title">A Evolução Sonora da Humanidade</h2>
+        <p class="section-desc">
+          Como a música se transformou de rituais tribais à era digital instantânea.
+        </p>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <span class="timeline-year">~40.000 a.C.</span>
+            <h4>As Primeiras Flautas da Pré-História</h4>
+            <p>
+              Feitas de ossos de abutre e marfim de mamute na caverna de Hohle Fels (Alemanha). 
+              A música precedeu a escrita e até as primeiras cidades agrícolas.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <span class="timeline-year">Séc. VI — XI</span>
+            <h4>Canto Gregoriano e Notação Musical</h4>
+            <p>
+              O monge Guido d'Arezzo concebeu a base da pauta moderna e os nomes das notas 
+              (Ut, Re, Mi, Fa, Sol, La, Si), originadas no hino a São João Batista.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <span class="timeline-year">1600 — 1750</span>
+            <h4>Era Barroca e o Temperamento Igual</h4>
+            <p>
+              Com J.S. Bach e o "Cravo Bem Temperado", a afinação ocidental padronizou os 12 semitons, 
+              permitindo a modulação fluida entre todas as tonalidades.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <span class="timeline-year">1877</span>
+            <h4>A Invenção do Fonógrafo</h4>
+            <p>
+              Thomas Edison capturou a voz humana e instrumentos em cilindros de cera. 
+              Pela primeira vez na história, o som pôde ser preservado e repetido sem execução humana ao vivo.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <span class="timeline-year">1960 — 1980</span>
+            <h4>Guitarras Elétricas e Sintetizadores Moog</h4>
+            <p>
+              A eletricidade remodelou a arte: Bob Moog popularizou os sintetizadores analógicos 
+              e a música pop encontrou novos mundos psicodélicos e experimentais.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <span class="timeline-year">Século XXI</span>
+            <h4>Streaming e Produção Algorítmica</h4>
+            <p>
+              A democratização das estações de áudio digital (DAWs) e da inteligência artificial 
+              permite que qualquer pessoa crie produções de altíssima fidelidade com alcance global.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção: Ciência e Curiosidades do Som -->
+  <section class="section" id="curiosidades">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Acústica & Mente</span>
+        <h2 class="section-title">A Ciência e os Mistérios do Som</h2>
+        <p class="section-desc">
+          O que a física ondulatória e a neurociência revelam sobre a experiência musical.
+        </p>
+      </div>
+
+      <div class="facts-grid">
+        <div class="fact-card">
+          <div class="fact-number">01</div>
+          <h3 class="fact-title">O Trítono: "Diabolus in Musica"</h3>
+          <p class="fact-text">
+            Um intervalo de três tons inteiros (como Dó e Fá#) causa tensão acústica máxima e instabilidade. 
+            Na Idade Média, lendas afirmavam que era a sonoridade do caos, mas hoje é a alma do Blues e do Heavy Metal.
+          </p>
+          <button class="btn-sound-mini" data-demo="tritone">🔊 Tocar Trítono</button>
+        </div>
+
+        <div class="fact-card">
+          <div class="fact-number">02</div>
+          <h3 class="fact-title">A Frequência A4 = 440 Hz</h3>
+          <p class="fact-text">
+            Em 1939, a norma internacional estabeleceu a nota Lá acima do Dó central exatamente em 440 oscilações por segundo, 
+            garantindo que uma orquestra em Viena e outra no Rio de Janeiro soem perfeitamente afinadas entre si.
+          </p>
+          <button class="btn-sound-mini" data-demo="a440">🔊 Tocar Lá (440 Hz)</button>
+        </div>
+
+        <div class="fact-card">
+          <div class="fact-number">03</div>
+          <h3 class="fact-title">A Dopamina Musical</h3>
+          <p class="fact-text">
+            Ouvir uma cadência harmônica esperada (ou uma resolução inesperada) aciona os circuitos de recompensa 
+            cerebrais, liberando ondas de dopamina e causando os famosos arrepios sonoros (frisson).
+          </p>
+          <button class="btn-sound-mini" data-demo="resolution">🔊 Tocar Resolução Harmônica</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="quote-block">
+        <p class="quote-text">“Sem a música, a vida seria um erro.”</p>
+        <span class="quote-author">— Friedrich Nietzsche</span>
+      </div>
+
+      <div class="footer-divider"></div>
+
+      <div class="footer-bottom">
+        <p>© HarmoniaViva — Uma celebração visual e interativa da arte musical.</p>
+        <p class="footer-credit">Desenvolvido com HTML5, CSS3 moderno, Web Audio API e MediaPipe Hands.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
